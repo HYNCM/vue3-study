@@ -1,61 +1,45 @@
 <template>
-  <h2>计算属性和监视</h2>
-  <fieldset>
-    <legend>姓名操作</legend>
-    姓氏：<input type="text" placeholder="请输入姓氏" v-model="user.firstName" /><br>
-    名字：<input type="text" placeholder="请输入名字" v-model="user.lastName" /><br>
-  </fieldset>
-  <fieldset>
-    <legend>计算属性和监视的演示</legend>
-    姓名：<input type="text" placeholder="显示姓名" v-model="fullName1" /><br>
-    姓名：<input type="text" placeholder="显示姓名" v-model="fullName2" /><br>
-    姓名：<input type="text" placeholder="显示姓名" v-model="fullName3" /><br>
-
-  </fieldset>
+  <h2>toRefs的使用</h2>
+  <!-- <ul>
+    <li>name:{{state.name}}</li>
+    <li>age:{{state.age}}</li>
+    <li>address:{{state.address}}</li>
+  </ul> -->
+  <ul>
+    <li>name:{{name}}</li>
+    <li>age:{{age}}</li>
+    <li>address:{{address}}</li>
+  </ul>
 </template>
 <script lang="ts">
-import { defineComponent, ref, computed, watch, reactive, watchEffect } from 'vue';
+import { defineComponent, reactive, toRefs } from 'vue'
 export default defineComponent({
   name: 'App',
   setup() {
-    const user = reactive({
-      firstName: "独孤",
-      lastName: "求败",
+    const state = reactive({
+      name: '张三',
+      age: 18,
+      address: '北京市'
     })
-    //通过计算属性的方式，实现第一个姓名的显示
-    //vue3中的计算属性
-    //如果计算属性中的函数只传入一个回调函数，表示的是get方法
-    const fullName1 = computed(() => {
-      return user.firstName + '_' + user.lastName;
-    })
-    // //返回ref对象
-    // console.log(fullName1)
-    const fullName2 = computed({
-      get() {
-        return user.firstName + '_' + user.lastName;
-      },
-      set(val: string) {
-        const names = val.split('_');
-        user.firstName = names[0];
-        user.lastName = names[1];
-      }
-    })
-    //监视-----监视指定的数据，当数据发生变化时，执行回调函数
-    //watch(监视的数据，回调函数)
-    const fullName3 = ref('')
-    // watch(user, ({ firstName, lastName }) => {
-    //   fullName3.value = firstName + '_' + lastName;
-    // }, { immediate: true, deep: true })
-    // immediate: true,表示立即执行回调函数
-    // deep: true,表示深度监视，如果监视的数据是对象，那么会监视对象中的所有属性
-    watchEffect(() => {
-      fullName3.value = user.firstName + '_' + user.lastName;
-    })
+    //toRefs可以把reactive对象转换成普通对象
+    //const state2 = toRefs(state)
+    const { name, age, address } = toRefs(state)
+    //console.log(state2)
+    //定时器，更新数据，如果数据变化，界面随之变化（响应式数据）
+    setInterval(() => {
+      //state.name += '=='
+      //state2.name.value += "=="
+      name.value += "=="
+    }, 1000)
+
+
     return {
-      user,
-      fullName1,
-      fullName2,
-      fullName3,
+      //state
+      //...state//...不是响应式的数据---->{name: '张三', age: 18, address: '北京市'}
+      //...state2
+      name,
+      age,
+      address
     }
   },
 })
