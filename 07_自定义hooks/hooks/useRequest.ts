@@ -3,6 +3,7 @@ import { ref } from "vue";
 import axios from "axios";
 //发送ajax请求
 export default function useRequest<T>(url: string) {
+  //泛型
   //加载状态
   const loading = ref(true);
   const data = ref<T | null>(null);
