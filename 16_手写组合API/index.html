@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>手写组合API</title>
+  </head>
+  <body>
+    <script src="./index.js"></script>
+    <script type="text/javascript">
+      const proxyUser1 = shallowReactive({
+        name: "ming",
+        car: {
+          color: "red",
+        },
+      });
+      //拦截到读和写的数据
+      //proxyUser1.name += "==";
+      //拦截到了读取数据，但是拦截不到写的数据
+      //   proxyUser1.car.color += "==";
+      //拦截到了删除数据
+      //delete proxyUser1.name;
+      //只拦截到了读，但是拦截不到删除
+      //delete proxyUser1.car.color;
+
+      const proxyUser2 = reactive({
+        name: "ming",
+        car: {
+          color: "red",
+        },
+      });
+      //拦截到了读和修改数据
+      //proxyUser2.name += "==";
+      //拦截到了读和修改的数据
+      //   proxyUser2.car.color = "==";
+      //拦截了删除数据
+      //   delete proxyUser2.name;
+      //拦截到了读和删除数据
+      //delete proxyUser2.car.color;
+
+      const proxyUser3 = shallowReadonly({
+        name: "ming",
+        cars: ["奔驰", "宝马"],
+      });
+      //proxyUser3.name = "==";
+      //delete proxyUser3.name;
+      //   proxyUser3.cars[0] = "aodi";
+      //   delete proxyUser3.cars[0];
+      const proxyUser4 = readonly({
+        name: "ming",
+        cars: ["奔驰", "宝马"],
+      });
+      //console.log(proxyUser4.name);
+      //console.log(proxyUser4.cars[0]);
+      //   proxyUser4.name = "==";
+      //proxyUser4.cars[0] = "==";
+      //   delete proxyUser4.name;
+      const ref1 = shallowRef({
+        name: "ming",
+        car: {
+          color: "red",
+        },
+      });
+      //   console.log(ref1.value);
+      //ref1.value = "==";
+      //   ref1.value.car = "==";
+
+      const ref2 = ref({
+        name: "ming",
+        car: {
+          color: "red",
+        },
+      });
+      //console.log(ref2.value);
+      //ref2.value = "===";
+      ref2.value.car = "==";
+    </script>
+  </body>
+</html>
